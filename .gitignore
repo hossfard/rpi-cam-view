@@ -1,0 +1,8 @@
+/build_armv7
+/build_x86
+/obj
+/moc
+Makefile
+rpicamview
+*.so
+*-deployment-settings.json
