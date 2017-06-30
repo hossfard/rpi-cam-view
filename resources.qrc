@@ -2,6 +2,7 @@
   <qresource prefix="/">
     <file>app.qml</file>
     <file>CamView.qml</file>
+    <file>SocketView.qml</file>
     <file>SettingsPage.qml</file>
     <file>img/textinput.png</file>
     <file>utilities.js</file>

@@ -6,3 +6,4 @@ Makefile
 rpicamview
 *.so
 *-deployment-settings.json
+qrc_resources.cpp

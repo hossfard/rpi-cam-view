@@ -10,7 +10,7 @@ ApplicationWindow{
     visible: true
 
     // default background color
-    Rectangle {
+    Rectangle{
         color: "#212126"
         anchors.fill: parent
     }
@@ -69,7 +69,11 @@ ApplicationWindow{
             var username = conf.username;
             var password = conf.password;
             var port = conf.port;
-            if (host.substr(0,4) != 'http'){
+            var ws = false;
+            if (host.substr(0,2) == 'ws'){
+                ws = true;
+            }
+            if ( (!ws) && (host.substr(0,4) != 'http')){
                 host = 'http://' + host
             }
             if (parseInt(port) == 80){
@@ -78,9 +82,21 @@ ApplicationWindow{
             else{
                 port = ':' + port
             }
-            var url = host + port + '/pi.jpg?u=' + username + '&p=' + password
+
+            if (ws){
+                var url = host + port + '/stream?u=' + username + '&p=' + password
+            }
+            else{
+                var url = host + port + '/pi.jpg?u=' + username + '&p=' + password
+            }
             // update URL
-            var qmlUrl = Qt.resolvedUrl("CamView.qml");
+            if (ws){
+                var qmlUrl = Qt.resolvedUrl("SocketView.qml");
+            }
+            else{
+                var qmlUrl = Qt.resolvedUrl("CamView.qml");
+            }
+
             stackView.push(qmlUrl);
             var camView = stackView.currentItem
             camView.url = url;

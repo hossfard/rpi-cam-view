@@ -3,6 +3,7 @@
 #include <QQmlContext>
 #include <QScreen>
 #include "RemoteImage.h"
+#include "RemoteSocketImage.h"
 
 
 int main(int argc, char *argv[]){
@@ -14,6 +15,7 @@ int main(int argc, char *argv[]){
 
   // Register custom types with the QML
   qmlRegisterType<RemoteImage>("Rpi", 1, 0, "RemoteImage");
+  qmlRegisterType<RemoteSocketImage>("Rpi", 1, 0, "RemoteSocketImage");
 
   QQmlApplicationEngine engine;
   qreal pdpi = QGuiApplication::primaryScreen()->physicalDotsPerInch();

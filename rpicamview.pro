@@ -1,13 +1,15 @@
 TARGET = rpicamview
 
-QT += qml quick
+QT += qml quick websockets
 
 QMAKE_CXXFLAGS += -std=c++11
 
-HEADERS += RemoteImage.h
+HEADERS += RemoteImage.h \
+           RemoteSocketImage.h
 
 SOURCES += main.cpp \
-           RemoteImage.cpp
+           RemoteImage.cpp \
+           RemoteSocketImage.cpp
 
 RESOURCES += resources.qrc
 
