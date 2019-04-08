@@ -100,6 +100,7 @@ ApplicationWindow{
             stackView.push(qmlUrl);
             var camView = stackView.currentItem
             camView.url = url;
+            Qt.inputMethod.hide();
         }
         else{
             stackView.pop();
@@ -118,6 +119,13 @@ ApplicationWindow{
                 event.accepted = true;
             }
         }
-        initialItem: Qt.resolvedUrl("SettingsPage.qml");
+        Component.onCompleted:{
+            var qmlUrl = Qt.resolvedUrl("SettingsPage.qml");
+            stackView.push(qmlUrl);
+            var view = stackView.currentItem;
+            view.onFinished.connect(function(){
+                configButtonClicked("save");
+            })
+        }
     }
 }
