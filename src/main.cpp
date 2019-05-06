@@ -21,7 +21,7 @@ int main(int argc, char *argv[]){
   qreal pdpi = QGuiApplication::primaryScreen()->physicalDotsPerInch();
   qreal dpr = QGuiApplication::primaryScreen()->devicePixelRatio();
   engine.rootContext()->setContextProperty("SPD", pdpi*dpr);
-  engine.load(QUrl("qrc:///app.qml"));
+  engine.load(QUrl("qrc:///src/app.qml"));
 
   return app.exec();
 }

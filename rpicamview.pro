@@ -4,12 +4,12 @@ QT += qml quick websockets
 
 QMAKE_CXXFLAGS += -std=c++11
 
-HEADERS += RemoteImage.h \
-           RemoteSocketImage.h
+HEADERS += src/RemoteImage.h \
+           src/RemoteSocketImage.h
 
-SOURCES += main.cpp \
-           RemoteImage.cpp \
-           RemoteSocketImage.cpp
+SOURCES += src/main.cpp \
+           src/RemoteImage.cpp \
+           src/RemoteSocketImage.cpp
 
 RESOURCES += resources.qrc
 
@@ -18,6 +18,6 @@ OBJECTS_DIR = obj
 
 # DESTPATH == $${
 
-qml.files = *.qml
+qml.files = src/*.qml
 
 # INSTALLS += target

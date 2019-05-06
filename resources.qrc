@@ -1,10 +1,10 @@
 <RCC>
   <qresource prefix="/">
-    <file>app.qml</file>
-    <file>CamView.qml</file>
-    <file>SocketView.qml</file>
-    <file>SettingsPage.qml</file>
+    <file>src/app.qml</file>
+    <file>src/CamView.qml</file>
+    <file>src/SocketView.qml</file>
+    <file>src/SettingsPage.qml</file>
     <file>img/textinput.png</file>
-    <file>utilities.js</file>
+    <file>src/utilities.js</file>
   </qresource>
 </RCC>
