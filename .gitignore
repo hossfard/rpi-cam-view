@@ -1,5 +1,7 @@
 /build_armv7
 /build_x86
+/build_and86
+/build_andx86
 /obj
 /moc
 Makefile
@@ -7,3 +9,17 @@ rpicamview
 *.so
 *-deployment-settings.json
 qrc_resources.cpp
+
+.qmake.stash
+AndroidManifest.xml.in
+AddQtAndroidApk.cmake
+rpicamview.pro.user
+test/.gradle/
+test/gradle*
+test/libs/
+test/local*
+test/build*
+test/assets/
+test/build
+test/res
+test/AndroidManifest.xml
