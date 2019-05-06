@@ -21,11 +21,28 @@ class RemoteSocketImage : public QQuickPaintedItem
 public:
   explicit RemoteSocketImage(QString url = "", QQuickItem *parent = nullptr);
 
-  // Set remote websocket URL
+  /** Remote URL
+   *
+   * @return Remote URL, empty if not set
+   */
   QString url() const;
+
+  /** Set remote url
+   *
+   * @param url remote URL
+   */
   void setUrl(QString url);
 
+  /** Return token to be sent to ws server on connect
+   *
+   * @return Connect token string, empty if not set
+   */
   QString connectToken() const;
+
+  /** Set token to be sent to ws server on connect
+   *
+   * @param token token string
+   */
   void setConnectToken(QString const& token);
 
 protected:
