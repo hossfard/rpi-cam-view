@@ -15,12 +15,14 @@ Item{
         property alias port: portField.text
         property alias username: usernameField.text
         property alias password: passwordField.text
+        property alias wsToken: wsConnectTokenField.text
     }
 
     property string host: hostField.text
     property string port: portField.text
     property string username: usernameField.text
     property string password: passwordField.text
+    property string wsToken: wsConnectTokenField.text
     signal finished()
 
     Column{
@@ -58,6 +60,14 @@ Item{
             style: touchStyle
             onAccepted: root.finished()
         }
+        TextField{
+            id: wsConnectTokenField
+            anchors.margins: 20
+            echoMode: TextInput.PasswordEchoOnEdit
+            placeholderText: "WS Token"
+            style: touchStyle
+            onAccepted: root.finished()
+        }
     }
 
     MouseArea{
@@ -76,7 +86,7 @@ Item{
                 implicitHeight: Utils.dp(50)
                 implicitWidth: Utils.dp(320)
                 BorderImage {
-                    source: "img/textinput.png"
+                    source: "../img/textinput.png"
                     border.left: 8
                     border.right: 8
                     anchors.bottom: parent.bottom

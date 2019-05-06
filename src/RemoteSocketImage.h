@@ -7,23 +7,26 @@
 
 class QPainter;
 
-/* Render MJPEG frames transmitted by remote websocket
+/** Render MJPEG frames transmitted by remote websocket
  *
  * Internally, a hard-coded authentication token is sent to remote
  * websocket once connection is established.
  *
  */
-
 class RemoteSocketImage : public QQuickPaintedItem
 {
   Q_OBJECT
   Q_PROPERTY(QString url READ url WRITE setUrl NOTIFY urlChanged);
+  Q_PROPERTY(QString connectToken READ connectToken WRITE setConnectToken);
 public:
-  RemoteSocketImage(QString url = "", QQuickItem *parent = nullptr);
+  explicit RemoteSocketImage(QString url = "", QQuickItem *parent = nullptr);
 
   // Set remote websocket URL
   QString url() const;
   void setUrl(QString url);
+
+  QString connectToken() const;
+  void setConnectToken(QString const& token);
 
 protected:
   void paint(QPainter *painter) override;
@@ -36,9 +39,10 @@ private slots:
   void textMessageReceived(QString const& msg);
 
 private:
-  QString url_;
-  QWebSocket websocket_;
-  QPixmap cache_;
+  QString m_url;
+  QString m_connectToken;
+  QWebSocket m_websocket;
+  QPixmap m_cache;
 };
 
 

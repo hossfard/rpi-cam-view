@@ -8,8 +8,9 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 
-/* Fetch and draw remote image */
-
+/** Periodically fetch and draw remote image
+ *
+ */
 class QPainter;
 
 class RemoteImage : public QQuickPaintedItem
@@ -20,20 +21,31 @@ class RemoteImage : public QQuickPaintedItem
              NOTIFY reloadIntervalChanged)
 
 public:
-  RemoteImage(QString url = "", QQuickItem *parent = nullptr);
+  explicit RemoteImage(QString url = "", QQuickItem *parent = nullptr);
 
-  // Remote URL. Returns empty string if not set
+  /** Return the remote URL
+   *
+   * @return Remote URL, empty if not set
+   */
   QString url() const;
 
-  // Set or update remote URL
+  /** Set remote url
+   *
+   * @param url remote URL
+   */
   void setUrl(QString url);
 
-  // Interval used for fetching remote image
+  /** Set perioid interval for fetching image
+   *
+   * @return reload interval in milliseconds
+   */
   int reloadInterval() const;
 
-  /* Specify interval in milliseconds to fetch remote image and update
+  /** Specify interval to fetch remote image and update
    *
    * Set interval to zero or negative to stop remote update
+   *
+   * @param interval reload interval in milliseconds
    */
   void setReloadInterval(int interval);
 
@@ -41,13 +53,21 @@ protected:
   void paint(QPainter *painter) override;
 
 signals:
-  // Signal emitted when remote URL is changed
+  /** Signal emitted when remote URL is changed
+   *
+   * @param url changed remote URL
+   */
   void urlChanged(QString url);
 
-  // Signal emitted when reload interval is changed
+  /** Signal emitted when reload interval is changed
+   *
+   */
   void reloadIntervalChanged(int interval);
 
-  // Error emitted when fetching remote image fails
+  /** Error emitted when fetching remote image fails
+   *
+   * @param err string representation of error
+   */
   void error(QString err);
 
 private slots:
@@ -56,12 +76,12 @@ private slots:
   void networkError(QNetworkReply::NetworkError code);
 
 private:
-  int reloadInterval_;
-  QString url_;
-  QPixmap cache_;
-  QTimer timer_;
-  QNetworkReply *reply_;
-  QNetworkAccessManager webCtrl_;
+  int m_reloadInterval;
+  QString m_url;
+  QPixmap m_cache;
+  QTimer m_timer;
+  QNetworkReply *m_reply;
+  QNetworkAccessManager m_webCtrl;
 };
 
 #endif /* REMOTEIMAGE_H_ */

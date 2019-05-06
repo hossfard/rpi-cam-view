@@ -5,6 +5,7 @@ import QtQuick.Controls 1.2
 
 Item{
     property alias url: image.url
+    property alias connectToken: image.connectToken
 
     Flickable{
         id: flick

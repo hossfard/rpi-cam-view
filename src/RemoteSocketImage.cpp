@@ -8,24 +8,24 @@ RemoteSocketImage::
 RemoteSocketImage(QString url, QQuickItem *parent)
   : QQuickPaintedItem(parent)
 {
-  url_ = url;
-
-  connect(&websocket_, SIGNAL(connected()), this, SLOT(websocketConnected()));
+  m_url = url;
+  setRotation(180);
+  connect(&m_websocket, SIGNAL(connected()), this, SLOT(websocketConnected()));
 
   // The server is expected to only send frames as base64 UTF8 data
-  connect(&websocket_, SIGNAL(textMessageReceived(QString const&)),
+  connect(&m_websocket, SIGNAL(textMessageReceived(QString const&)),
           this, SLOT(textMessageReceived(QString const&)));
 
-  connect(&websocket_, &QWebSocket::disconnected, [=](){
+  connect(&m_websocket, &QWebSocket::disconnected, [=](){
       qDebug() << "disconnected";
     });
 
-  connect(&websocket_, static_cast<void(QWebSocket::*)(QAbstractSocket::SocketError)>(&QWebSocket::error),
+  connect(&m_websocket, static_cast<void(QWebSocket::*)(QAbstractSocket::SocketError)>(&QWebSocket::error),
           [=](QAbstractSocket::SocketError err){
             qDebug() << "error: " <<  err;
           });
 
-  connect(&websocket_, &QWebSocket::stateChanged, [=](QAbstractSocket::SocketState s){
+  connect(&m_websocket, &QWebSocket::stateChanged, [=](QAbstractSocket::SocketState s){
       qDebug() << "state changed: " << s;
     });
 }
@@ -34,47 +34,62 @@ RemoteSocketImage(QString url, QQuickItem *parent)
 void
 RemoteSocketImage::
 setUrl(QString url){
-  if (url != url_){
-    url_ = url;
-    websocket_.open(url);
-    qDebug() << "url = " << url;
-    emit urlChanged(url);
+  if (url == m_url){
+    return;
   }
+
+  m_url = url;
+  m_websocket.open(url);
+  emit urlChanged(url);
 }
 
 
 QString
 RemoteSocketImage::
 url() const{
-  return url_;
+  return m_url;
 }
 
 
 void
 RemoteSocketImage::
 paint(QPainter *painter){
-  if (! cache_.isNull()){
-    auto w = boundingRect().width();
-    auto h = boundingRect().height();
-    painter->drawPixmap(QRectF(0,0, w, h),
-                        cache_.scaled(w,h),
-                        QRectF(0,0, w, h));
+  if (m_cache.isNull()){
+    return;
   }
-}
 
+  auto w = boundingRect().width();
+  auto h = boundingRect().height();
+  painter->drawPixmap(QRectF(0,0, w, h),
+                      m_cache.scaled(w,h),
+                      QRectF(0,0, w, h));
+}
 
 void
 RemoteSocketImage::
 websocketConnected(){
-  qDebug() << "connected ";
-  websocket_.sendTextMessage("0YE07uoK27jNBq92tHADQmw/CS0ayGkk5Ocnjq4+gto=");
-}
+  if (m_connectToken.isEmpty())
+    return;
 
+  m_websocket.sendTextMessage(m_connectToken);
+}
 
 void
 RemoteSocketImage::
 textMessageReceived(QString const& msg){
-  if (cache_.loadFromData(QByteArray::fromBase64(msg.toUtf8()))){
+  if (m_cache.loadFromData(QByteArray::fromBase64(msg.toUtf8()))){
     update();
   }
+}
+
+QString
+RemoteSocketImage::
+connectToken() const{
+  return m_connectToken;
+}
+
+void
+RemoteSocketImage::
+setConnectToken(QString const& token){
+  m_connectToken = token;
 }

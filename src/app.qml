@@ -91,15 +91,18 @@ ApplicationWindow{
             }
             // update URL
             if (ws){
-                var qmlUrl = Qt.resolvedUrl("SocketView.qml");
+                var qmlUrl = Qt.resolvedUrl('SocketView.qml');
             }
             else{
-                var qmlUrl = Qt.resolvedUrl("CamView.qml");
+                var qmlUrl = Qt.resolvedUrl('CamView.qml');
             }
 
             stackView.push(qmlUrl);
-            var camView = stackView.currentItem
+            var camView = stackView.currentItem;
             camView.url = url;
+            if (ws){
+                camView.connectToken = conf.wsToken;
+            }
             Qt.inputMethod.hide();
         }
         else{

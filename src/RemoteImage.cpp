@@ -10,9 +10,9 @@ RemoteImage::
 RemoteImage(QString url /* = "" */, QQuickItem *parent /*= nullptr*/)
   : QQuickPaintedItem(parent)
 {
-  reloadInterval_ = 2000;
-  url_ = url;
-  connect(&webCtrl_, SIGNAL(finished(QNetworkReply*)),
+  m_reloadInterval = 2000;
+  m_url = url;
+  connect(&m_webCtrl, SIGNAL(finished(QNetworkReply*)),
           this, SLOT(requestFinished(QNetworkReply*)));
 }
 
@@ -20,27 +20,29 @@ RemoteImage(QString url /* = "" */, QQuickItem *parent /*= nullptr*/)
 QString
 RemoteImage::
 url() const{
-  return url_;
+  return m_url;
 }
 
 
 void
 RemoteImage::
 setUrl(QString url){
-  if (url != url_){
-    url_ = url;
-    QUrl qurl = QUrl(url);
-    QNetworkRequest req(qurl);
-    reply_ = webCtrl_.get(req);
-    connect(reply_, SIGNAL(error(QNetworkReply::NetworkError)),
-            this, SLOT(networkError(QNetworkReply::NetworkError)));
-
-    connect(&timer_, SIGNAL(timeout()), this, SLOT(timersUp()));
-    timer_.start(reloadInterval_);
-
-    update();
-    emit urlChanged(url_);
+  if (url == m_url){
+    return;
   }
+
+  m_url = url;
+  QUrl qurl = QUrl(url);
+  QNetworkRequest req(qurl);
+  m_reply = m_webCtrl.get(req);
+  connect(m_reply, SIGNAL(error(QNetworkReply::NetworkError)),
+          this, SLOT(networkError(QNetworkReply::NetworkError)));
+
+  connect(&m_timer, SIGNAL(timeout()), this, SLOT(timersUp()));
+  m_timer.start(m_reloadInterval);
+
+  update();
+  emit urlChanged(m_url);
 }
 
 
@@ -55,60 +57,67 @@ networkError(QNetworkReply::NetworkError code){
 void
 RemoteImage::
 paint(QPainter *painter){
-  if (! cache_.isNull()){
-    auto w = boundingRect().width();
-    auto h = boundingRect().height();
-    painter->drawPixmap(QRectF(0,0, w, h),
-                        cache_.scaled(w,h),
-                        QRectF(0,0, w, h));
-  }
+ if (m_cache.isNull()){
+   return;
+ }
+
+ auto w = boundingRect().width();
+ auto h = boundingRect().height();
+ painter->drawPixmap(QRectF(0,0, w, h),
+                     m_cache.scaled(w,h),
+                     QRectF(0,0, w, h));
 }
 
 
 int
 RemoteImage::
 reloadInterval() const{
-  return reloadInterval_;
+  return m_reloadInterval;
 }
 
 
 void
 RemoteImage::
 setReloadInterval(int interval){
-  if (interval != reloadInterval_){
-    // Stop requesting and reloading image
-    if (interval <= 0){
-      timer_.stop();
-      reloadInterval_ = 0;
-    }
-    else{
-      // Update reload interval
-      reloadInterval_ = interval;
-      connect(&timer_, SIGNAL(timeout()), this, SLOT(timersUp()));
-      timer_.start(reloadInterval_);
-    }
-    emit reloadIntervalChanged(interval);
+  if (interval == m_reloadInterval){
+    return;
   }
+
+  // Stop requesting and reloading image
+  if (interval <= 0){
+    m_timer.stop();
+    m_reloadInterval = 0;
+  }
+  else{
+    // Update reload interval
+    m_reloadInterval = interval;
+    connect(&m_timer, SIGNAL(timeout()), this, SLOT(timersUp()));
+    m_timer.start(m_reloadInterval);
+  }
+  emit reloadIntervalChanged(interval);
 }
 
 
 void
 RemoteImage::
 timersUp(){
-  if (!reply_->isRunning()){
-    QUrl qurl = QUrl(url_);
-    QNetworkRequest req(qurl);
-    reply_->deleteLater();
-    reply_ = webCtrl_.get(req);
-    connect(reply_, SIGNAL(error(QNetworkReply::NetworkError)),
-            this, SLOT(networkError(QNetworkReply::NetworkError)));
+  if (m_reply->isRunning()){
+    return;
   }
+
+  QUrl qurl = QUrl(m_url);
+  QNetworkRequest req(qurl);
+  m_reply->deleteLater();
+  m_reply = m_webCtrl.get(req);
+  connect(m_reply, SIGNAL(error(QNetworkReply::NetworkError)),
+          this, SLOT(networkError(QNetworkReply::NetworkError)));
 }
+
 
 // Redraw the image
 void
 RemoteImage::
 requestFinished(QNetworkReply *reply){
-  cache_.loadFromData(reply->readAll());
+  m_cache.loadFromData(reply->readAll());
   update();
 }
