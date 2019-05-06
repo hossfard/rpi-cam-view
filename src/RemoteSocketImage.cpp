@@ -1,7 +1,6 @@
 #include "RemoteSocketImage.h"
 #include <QByteArray>
 #include <QPainter>
-#include <QDebug>
 
 
 RemoteSocketImage::
@@ -15,19 +14,6 @@ RemoteSocketImage(QString url, QQuickItem *parent)
   // The server is expected to only send frames as base64 UTF8 data
   connect(&m_websocket, SIGNAL(textMessageReceived(QString const&)),
           this, SLOT(textMessageReceived(QString const&)));
-
-  connect(&m_websocket, &QWebSocket::disconnected, [=](){
-      qDebug() << "disconnected";
-    });
-
-  connect(&m_websocket, static_cast<void(QWebSocket::*)(QAbstractSocket::SocketError)>(&QWebSocket::error),
-          [=](QAbstractSocket::SocketError err){
-            qDebug() << "error: " <<  err;
-          });
-
-  connect(&m_websocket, &QWebSocket::stateChanged, [=](QAbstractSocket::SocketState s){
-      qDebug() << "state changed: " << s;
-    });
 }
 
 

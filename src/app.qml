@@ -100,9 +100,11 @@ ApplicationWindow{
             stackView.push(qmlUrl);
             var camView = stackView.currentItem;
             camView.url = url;
+
             if (ws){
                 camView.connectToken = conf.wsToken;
             }
+
             Qt.inputMethod.hide();
         }
         else{
