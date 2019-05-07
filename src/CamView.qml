@@ -36,7 +36,7 @@ Item{
                 pinch.dragAxis: Pinch.XAndYAxis
 
                 // This needs to be a child of PinchArea, otherwise it
-                // will eat up press evens
+                // will eat up press events
                 MouseArea{
                     id: dragArea
                     anchors.fill: parent
