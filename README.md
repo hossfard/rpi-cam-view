@@ -6,7 +6,7 @@ the minimal [rpi cam server](https://github.com/hossfard/rpi-cam-server).
 ![Demo](./video/android-demo.gif)
 
 *Note*: this was originally written in 2017 and has since been
-revisited. The following toolkits and versions were used
+revisited.
 
 # Requirements
 
@@ -21,7 +21,8 @@ revisited. The following toolkits and versions were used
 * C++11+ compliant compiler
 
 
-See [android sdk, ndk, and Qt](#getting-started-with-android-and-avd) section for notes in installing Android toolkits and QT.
+See [android sdk, ndk, and Qt](#getting-started-with-android-and-avd)
+section for notes on installing Android sdk/ndk and QT.
 
 # Usage
 
@@ -34,7 +35,7 @@ information in the fields:
 - `username`: username for HTTP access
 - `password`: password for HTTP access
 - `WS Token`: authentication token sent to server on first connect to
-  websocket. Only valid for websocket protocol.
+  websocket. Only used when using the websocket protocol.
 
 # Compilation
 
@@ -56,14 +57,9 @@ Note:
 2. Run `android_build.sh`
 
 
-### Deploy to emulator
+## iOS
 
-Start emulator, then push to device:
-
-```bash
-emulator -avd created-device-name -skin 540x960 # (or e.g. 1200x1920)
-adb install -r PATH/TO/APK
-```
+TODO
 
 ## Desktop (x86)
 
@@ -72,6 +68,15 @@ source env.sh gcc_64
 qmake64
 make clean
 make
+```
+
+# Deploy to Android emulator
+
+Start emulator, then push to device.
+
+```bash
+emulator -avd created-device-name -skin 540x960 # (or e.g. 1200x1920)
+adb install -r PATH/TO/APK
 ```
 
 # Getting started with Android and AVD
