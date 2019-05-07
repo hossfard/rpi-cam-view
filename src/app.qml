@@ -45,25 +45,12 @@ ApplicationWindow{
                     }
                 }
             }
-            /* Behavior on x{ */
-            /*     NumberAnimation{ } */
-            /* } */
         }
-        /* states: [ */
-        /*     State{ */
-        /*         name: "xxx" */
-        /*         PropertyChanges{ */
-        /*             target: configText */
-        /*             x: 100 */
-        /*         } */
-        /*     } */
-        /* ] */
     }
 
     // Reset remote URL
     function configButtonClicked(mode){
         if (mode == "save"){
-            /* applicationBar.state = "xxx" */
             var conf = stackView.currentItem;
             var host = conf.host;
             var username = conf.username;

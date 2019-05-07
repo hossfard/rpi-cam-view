@@ -21,7 +21,6 @@ Item{
             // Setting anchors.fill will make it non-draggable
             // anchors.fill: parent
 
-
             RemoteSocketImage{
                 id: image
                 anchors.fill: parent
@@ -38,8 +37,8 @@ Item{
                 pinch.maximumX: 100
                 pinch.dragAxis: Pinch.XAndYAxis
 
-                // This *needs* to be a child of PinchArea, otherwise,
-                // it will eat up press evens
+                // This needs to be a child of PinchArea, otherwise it
+                // will eat up press evens
                 MouseArea{
                     id: dragArea
                     anchors.fill: parent
