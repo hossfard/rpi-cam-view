@@ -1,28 +1,27 @@
 # Synopsis
 
 Simple RPI cam viewer for Android meant to be used in conjunction with
-the minimal [rpi cam server]().
+the minimal [rpi cam server](https://github.com/hossfard/rpi-cam-server).
 
-*Note*: this was originally written in 2017. Please note that
-following toolkits and versions were used
+![Demo](./video/android-demo.gif)
 
-Following tools were used
-* Qt ~~5.6.2~~ 5.12.2
-* Android SDK 26.1.1
-* Android NDK
-* ~~Apache ANT 1.10.1~~
-* Android platform API 24
-* Gradle 4.6 (auto downloaded by `androiddeployqt`)
+*Note*: this was originally written in 2017 and has since been
+revisited. The following toolkits and versions were used
 
 # Requirements
 
-Additional yum packages that were installed
-* ~~SDL-devel~~
-* ~~glibc~~
-* ~~libgcc_s.so.1~~
+* Android SDK (used 24, 26)
+* Android NDK
+* Qt (tried with 5.6+)
 * openjdk 1.8
 * openjdk-devel
-* @vitualization
+* Android platform API (24)
+* ~~Apache ANT 1.10.1~~
+* Gradle (auto downloaded by `androiddeployqt`)
+* C++11+ compliant compiler
+
+
+See [android sdk, ndk, and Qt](#getting-started-with-android-and-avd) section for notes in installing Android toolkits and QT.
 
 # Usage
 
@@ -39,8 +38,8 @@ information in the fields:
 
 # Compilation
 
-First, [Download and install](#getting-started-with-android-and-AVD)
-QT and android SDK and NDK. Then follow sections below.
+First, [download and install](#getting-started-with-android-and-avd)
+QT and Android SDK and NDK. Then follow sections below.
 
 ## Android (x86)
 1. Adjust paths under `env.sh`
@@ -51,25 +50,31 @@ Note:
   path, then `androiddeployqt` will silently download `gradle` to
   `~/.gradle`. It's a larger file so may take a while.
 
+## Android (arm)
+1. Adjust paths under `env.sh`
+2. Modify `android_build.sh` and change relevant entries to armv7
+2. Run `android_build.sh`
+
+
 ### Deploy to emulator
 
 Start emulator, then push to device:
 
 ```bash
-> emulator -avd created-device-name -skin 540x960 # (or e.g. 1200x1920)
-> adb install -r PATH/TO/APK
+emulator -avd created-device-name -skin 540x960 # (or e.g. 1200x1920)
+adb install -r PATH/TO/APK
 ```
 
 ## Desktop (x86)
 
 ```bash
-> source env.sh gcc_64
-> qmake64
-> make clean
-> make
+source env.sh gcc_64
+qmake64
+make clean
+make
 ```
 
-# Getting started with Android, and AVD
+# Getting started with Android and AVD
 
 There were a lot of bugs originally when using Qt 5.6.2 e.g. blank
 screen when starting apps in the android emulator.
@@ -94,16 +99,18 @@ mkdir /opt/android/ndk
 mv android-ndk-r19c /opt/android/ndk
 ```
 
-3. Download [Qt5.12]()
+3. Download Qt (e.g. 5.12)
 
 ```bash
-download-qt5.12-from-website # .run file
-chmod u+x qt5.12.run
-./qt5.12.run
+download-qt5.12.2-from-website # .run file
+chmod u+x qt5.12.2.run
+./qt5.12.2.run
 mv-extracted-contents-to /opt/Qt/5.12.2
 ```
 
 4. Install prerequisites
+
+On OpenSUSE,
 
 ```bash
 zypper in java-1_8_0-openjdk java-1_8_0-openjdk-devel
@@ -188,3 +195,7 @@ Pushing apks to emulator while the emulator is running:
 ```bash
 adb install -r PATH/TO/file.apk
 ```
+
+# TODO
+
+- Better streamline builds for different platforms
