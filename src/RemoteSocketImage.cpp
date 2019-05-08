@@ -8,7 +8,6 @@ RemoteSocketImage(QString url, QQuickItem *parent)
   : QQuickPaintedItem(parent)
 {
   m_url = url;
-  setRotation(180);
   connect(&m_websocket, SIGNAL(connected()), this, SLOT(websocketConnected()));
 
   // The server is expected to only send frames as base64 UTF8 data
